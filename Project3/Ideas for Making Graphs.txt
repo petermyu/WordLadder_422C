@@ -1,0 +1,42 @@
+Idea #1:
+A struct of Node:
+1. String word = the word of this Node
+2. List of String = a list of all the words this vertex connects to
+3. List of Node = a list of all the Nodes of the words this vertex connects to
+
+public list of Nodes NodeList
+
+Process of creation:
+Each time we read a new word, we add it to NodeList. Then we check the past nodes in NodeList to connect all the edges.
+
+We end up with a graph full of Nodes and each node has a list of adjacent nodes.
+
+This is the typical graph.
+
+It's at least O(N^2) time complexity.
+
+
+
+
+Idea #2:
+
+A template word is something like this "THIN_" with _ being a wildcard.
+A list of words that fit "THIN_" criteria would be:
+THING
+THINK
+... and so on
+
+A struct of Node:
+1. String word = the "template" word of this Node
+2. List of words = all the words that fit the criteria for this template word
+
+public list of Nodes NodeList
+
+Process of creation:
+Each time we read a new word, we make wildcards of that word and store them in NodeList, 
+if the wildcards already exit, add the word to the corresponding wildcards' lists.
+
+We end up with a list of Nodes/Wildcards and each Node has a list of words that fit the wildcard.
+
+To search in it, we first create a list of visited Nodes. Begin by looking at the wildcards of the starter word. 
+We go through the list of words in each Node and add the visited Nodes. Ignore all visited Nodes in future iterations.
