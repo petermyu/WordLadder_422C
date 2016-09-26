@@ -18,7 +18,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	
+	public Scanner keyboardInput = new Scanner(System.in);
 	// static variables and constants only here.
 	
 	public static void main(String[] args) throws Exception {
@@ -43,6 +43,7 @@ public class Main {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
+		Scanner keyboard = new Scanner(System.in);
 	}
 	
 	/**
@@ -52,7 +53,36 @@ public class Main {
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		// TO DO
-		return null;
+		ArrayList<String> inputWords = new ArrayList<String>();
+		System.out.println("Enter words: ");
+		String input = keyboard.nextLine();
+		
+		if(input.equals("/quit")){
+			return null;
+		}
+		else{
+			char[] words = new char[input.length()];
+			char[] word1 = new char[input.length()/2];
+			char[] word2 = new char[input.length()/2];
+			int i = 0;
+			int k = 0;
+			input.getChars(0, input.length(), words, 0);
+			while(words[i] != ' '){
+				word1[i] = words[i];
+				i++;
+			}
+			while(words[i] == ' '){i++;}
+			while(i<words.length){
+				word2[k] = words[i];
+				i++;
+				k++;
+			}
+			String string1 = new String(word1);
+			String string2 = new String(word2);
+			inputWords.add(string1);
+			inputWords.add(string2);
+			return inputWords;
+		}
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
