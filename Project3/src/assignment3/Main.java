@@ -22,7 +22,6 @@ public class Main {
 	// static variables and constants only here.
 	public static List<Node> NodeList = new ArrayList<Node>();
 	
-	
 	public static void main(String[] args) throws Exception {
 		/*
 		Scanner kb;	// input Scanner for commands
@@ -113,8 +112,8 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		// TODO some code
-
 		
+		clear();
 		return null; // replace this line later with real return
 	}
 	
@@ -122,7 +121,7 @@ public class Main {
 		
 		// TODO some code
 
-		
+		clear();
 		return null; // replace this line later with real return
 	}
     
@@ -143,7 +142,17 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		if (ladder.size() >= 2){
+			
+			System.out.println("a " + "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size() - 1) + ".");
+			
+			for(int i = 0; i < ladder.size(); i++){
+				System.out.println(ladder.get(i));
+			}
+		}
+		else{
+			
+		}
 	}
 	// TODO
 	// Other private static methods here
@@ -168,6 +177,33 @@ public class Main {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Gets the Node with the specified word
+	 * @param str is the word we're looking for in the list of Nodes
+	 * @return the Node with the specified word
+	 */
+	private static Node find(String str){
+		
+		int i = 0;
+		while(i < NodeList.size()){
+			if (NodeList.get(i).word.equals(str)){
+				return NodeList.get(i);
+			}
+		}
+		
+		System.out.println("Something is broken.");
+		return null;
+	}
+	
+	/**
+	 * Sets all the Nodes to not visited
+	 */
+	private static void clear(){
+		for(int i = 0; i < NodeList.size(); i++){
+			NodeList.get(i).isVisited = false;
+		}
 	}
 	
 	/**
