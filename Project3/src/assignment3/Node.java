@@ -10,11 +10,19 @@ public class Node {
 	public Node(String str){
 		this.word = str;
 	}
+	
 
-	public String toString(){
+	// Returns a string of all the list of words related to this word.
+	public String nodesToString(){
 		String str = "";
 		for(int i = 0; i < this.nodes.size(); i++){
-			str += ", " + this.nodes.get(i).word;
+			if (str.equals("")){
+				str += this.nodes.get(i).word;
+			}
+			else{
+				str += ", " + this.nodes.get(i).word;
+			}
+			
 		}
 		
 		return str;
