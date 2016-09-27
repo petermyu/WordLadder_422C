@@ -59,10 +59,12 @@ public class Main {
 	public static ArrayList<String> parse(Scanner keyboard) {
 		// TO DO
 		ArrayList<String> inputWords = new ArrayList<String>();
+
 		// System.out.println("Enter words: ");
-		String input = keyboard.nextLine();
+		String input = keyboard.nextLine().toUpperCase();
+
 		
-		if(input.equals("/quit")){
+		if(input.equals("/QUIT")){
 			return null;
 		}
 		else{
