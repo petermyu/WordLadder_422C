@@ -20,7 +20,7 @@ import java.io.*;
 public class Main {
 	public Scanner keyboardInput = new Scanner(System.in);
 	// static variables and constants only here.
-	
+	static Set<String> dict;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -39,7 +39,7 @@ public class Main {
 		
 		// TODO methods to read in words, output ladder
 		ArrayList<String> p = parse(kb);
-		printLadder(getWordLadderBFS(p.get(0), p.get(1)));
+		printLadder(getWordLadderDFS(p.get(0), p.get(1)));
 	}
 	
 	public static void initialize() {
@@ -48,6 +48,7 @@ public class Main {
 		// only once at the start of main.
 		
 		Scanner keyboard = new Scanner(System.in);
+		dict = makeDictionary();
 	}
 	
 	/**
@@ -95,15 +96,48 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		// TODO some code
-		Set<String> dict = makeDictionary();
+		
+		dict.remove(start);
+		
+		// Base case
+		if (start.equals(end)){
+			ArrayList<String> temp = new ArrayList<String>();
+			temp.add(end);
+			return temp;
+		}
+		else{
+			char[] arr = start.toCharArray();
+	        for(int i=0; i<arr.length; i++){
+	            for(char c='A'; c<='Z'; c++){
+	                char temp = arr[i];
+	                if(arr[i]!=c){
+	                    arr[i]=c;
+	                }
+
+	                String newWord = new String(arr);
+	                
+	                if(dict.contains(newWord)){
+	                	ArrayList<String> t = getWordLadderDFS(newWord, end);
+	                	if (t.size() > 0 && t.get(t.size() - 1).equals(end)){
+	                		t.add(0, start);
+	                		return t;
+	                	}
+	                }
+
+	                arr[i]=temp;
+	            }
+	        }
+	        
+	        ArrayList<String> noLinks = new ArrayList<String>();
+        	return noLinks;
+		}
+
 		
 		
-		return null; // replace this line later with real return
+
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-    	Set<String> dict = makeDictionary();
-		
     	LinkedList<Node> queue = new LinkedList<Node>();
         queue.add(new Node(start, 1));
         dict.remove(start);
