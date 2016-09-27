@@ -20,10 +20,10 @@ import java.io.*;
 public class Main {
 	public Scanner keyboardInput = new Scanner(System.in);
 	// static variables and constants only here.
-	public static List<Node> NodeList = new ArrayList<Node>();
+	
 	
 	public static void main(String[] args) throws Exception {
-		/*
+		
 		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -34,10 +34,12 @@ public class Main {
 		} else {
 			kb = new Scanner(System.in);// default from Stdin
 			ps = System.out;			// default to Stdout
-		}*/
+		}
 		initialize();
 		
 		// TODO methods to read in words, output ladder
+		ArrayList<String> p = parse(kb);
+		printLadder(getWordLadderBFS(p.get(0), p.get(1)));
 	}
 	
 	public static void initialize() {
@@ -46,24 +48,6 @@ public class Main {
 		// only once at the start of main.
 		
 		Scanner keyboard = new Scanner(System.in);
-		
-		Set<String> dict = makeDictionary();
-		
-		String[] words = new String[dict.size()];
-		words = dict.toArray(words);
-		
-		for(int i = 0; i < words.length; i++){
-			NodeList.add(new Node(words[i]));
-			for (int j = 0; j < i; j++){
-				// If current word is related to...
-				if (isRelated(words[i], words[j])){
-					NodeList.get(i).nodes.add(NodeList.get(j));
-					NodeList.get(j).nodes.add(NodeList.get(i));					
-				}
-			}
-		}
-		
-
 	}
 	
 	/**
@@ -71,11 +55,10 @@ public class Main {
 	 * @return ArrayList of 2 Strings containing start word and end word. 
 	 * If command is /quit, return empty ArrayList. 
 	 */
-
 	public static ArrayList<String> parse(Scanner keyboard) {
 		// TO DO
 		ArrayList<String> inputWords = new ArrayList<String>();
-		System.out.println("Enter words: ");
+		// System.out.println("Enter words: ");
 		String input = keyboard.nextLine();
 		
 		if(input.equals("/quit")){
@@ -112,24 +95,89 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		// TODO some code
+		Set<String> dict = makeDictionary();
 		
-		clear();
+		
 		return null; // replace this line later with real return
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    	Set<String> dict = makeDictionary();
 		
-		// TODO some code
-
-		clear();
-		return null; // replace this line later with real return
+    	LinkedList<Node> queue = new LinkedList<Node>();
+        queue.add(new Node(start, 1));
+        dict.remove(start);
+        dict.add(end);
+ 
+        if (isRelated(start, end)){
+        	ArrayList<String> n = new ArrayList<String>();
+        	n.add(start);
+        	n.add(end);
+        	return n;
+        }
+        
+        ArrayList<String> s = new ArrayList<String>();
+        
+        while(!queue.isEmpty()){
+            Node top = queue.remove();
+            String word = top.word;
+            s.add(word);
+            
+            System.out.println("Removed: " + word);
+            
+            if(word.equals(end)){
+                System.out.println(top.numSteps);
+                
+                ArrayList<String> ret = new ArrayList<String>();
+                ret.add(end);
+                
+                while(!ret.get(ret.size() - 1).equals(start)){
+                	int i = 0;
+                    while(!isRelated(s.get(i), ret.get(ret.size() - 1))){
+                    	i++;
+                    }
+                    ret.add(s.get(i));
+                }
+                
+                Collections.reverse(ret);
+                
+                return ret;
+            }
+ 
+            char[] arr = word.toCharArray();
+            for(int i=0; i<arr.length; i++){
+                for(char c='A'; c<='Z'; c++){
+                    char temp = arr[i];
+                    if(arr[i]!=c){
+                        arr[i]=c;
+                    }
+ 
+                    String newWord = new String(arr);
+                    
+                    if(dict.contains(newWord)){
+                        queue.add(new Node(newWord, top.numSteps+1));
+                        // System.out.println("New word: " + newWord);
+                        dict.remove(newWord);
+                    }
+ 
+                    arr[i]=temp;
+                }
+            }
+        }
+        
+    	ArrayList<String> r = new ArrayList<String>();
+    	r.add("");
+    	r.add(start);
+    	r.add(end);
+    	
+		return r; 
 	}
     
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		try {
-			infile = new Scanner (new File("five_letter_words.txt"));
+			infile = new Scanner (new File("short_dict2.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
 			e.printStackTrace();
@@ -142,16 +190,16 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		if (ladder.size() >= 2){
+		if (!ladder.get(0).equals("")){
 			
-			System.out.println("a " + "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size() - 1) + ".");
+			System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size() - 1) + ".");
 			
 			for(int i = 0; i < ladder.size(); i++){
 				System.out.println(ladder.get(i));
 			}
 		}
 		else{
-			
+			System.out.println("no word ladder can be found between " + ladder.get(1) + " and " + ladder.get(2) + ".");
 		}
 	}
 	// TODO
@@ -177,43 +225,5 @@ public class Main {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * Gets the Node with the specified word
-	 * @param str is the word we're looking for in the list of Nodes
-	 * @return the Node with the specified word
-	 */
-	private static Node find(String str){
-		
-		int i = 0;
-		while(i < NodeList.size()){
-			if (NodeList.get(i).word.equals(str)){
-				return NodeList.get(i);
-			}
-		}
-		
-		System.out.println("Something is broken.");
-		return null;
-	}
-	
-	/**
-	 * Sets all the Nodes to not visited
-	 */
-	private static void clear(){
-		for(int i = 0; i < NodeList.size(); i++){
-			NodeList.get(i).isVisited = false;
-		}
-	}
-	
-	/**
-	 * TESTING ONLY. Prints out all the other words that are related under each word.
-	 */
-	private static void printAllRelated(){
-		for(int i = 0; i < NodeList.size(); i++){
-			if (NodeList.get(i).nodes.size() > 0){
-				System.out.println(NodeList.get(i).word + ": " + NodeList.get(i).nodesToString());
-			}
-		}
 	}
 }
