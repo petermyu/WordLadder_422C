@@ -113,8 +113,7 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
+
 		
 		return null; // replace this line later with real return
 	}
@@ -122,8 +121,7 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
 		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
+
 		
 		return null; // replace this line later with real return
 	}
@@ -149,7 +147,12 @@ public class Main {
 	}
 	// TODO
 	// Other private static methods here
-	
+	/**
+	 * Checks if two string are related by one letter
+	 * @param str1 is the first string
+	 * @param str2 is the second string
+	 * @return true if they are related, false if they are not
+	 */
 	private static boolean isRelated(String str1, String str2){
 		
 		int count = 0;
