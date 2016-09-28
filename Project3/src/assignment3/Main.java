@@ -1,14 +1,14 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * Jia-luen Yang
+ * JY8435
+ * 16455
  * <Student2 Name>
  * <Student2 EID>
  * <Student2 5-digit Unique No.>
  * Slip days used: <0>
- * Git URL:
+ * Git URL: https://github.com/petermyu/WordLadder_422C
  * Fall 2016
  */
 
@@ -21,6 +21,10 @@ public class Main {
 	public Scanner keyboardInput = new Scanner(System.in);
 	// static variables and constants only here.
 	static Set<String> dict;
+	// For ptinting only
+	static String sWord;
+	static String eWord;
+	static int dictLength;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -39,7 +43,7 @@ public class Main {
 		
 		// TODO methods to read in words, output ladder
 		ArrayList<String> p = parse(kb);
-		printLadder(getWordLadderDFS(p.get(0), p.get(1)));
+		printLadder(getWordLadderBFS(p.get(0), p.get(1)));
 	}
 	
 	public static void initialize() {
@@ -49,6 +53,7 @@ public class Main {
 		
 		Scanner keyboard = new Scanner(System.in);
 		dict = makeDictionary();
+		dictLength = dict.size();
 	}
 	
 	/**
@@ -99,6 +104,11 @@ public class Main {
 		// Return empty list if no ladder.
 		// TODO some code
 		
+		if (dictLength == dict.size()){
+			sWord = start;
+			eWord = end;
+		}
+		
 		dict.remove(start);
 		
 		// Base case
@@ -140,11 +150,16 @@ public class Main {
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    	sWord = start;
+    	eWord = end;
+    	
+    	
     	LinkedList<Node> queue = new LinkedList<Node>();
         queue.add(new Node(start, 1));
         dict.remove(start);
         dict.add(end);
  
+        // 0 rung
         if (isRelated(start, end)){
         	ArrayList<String> n = new ArrayList<String>();
         	n.add(start);
@@ -159,11 +174,12 @@ public class Main {
             String word = top.word;
             s.add(word);
             
-            System.out.println("Removed: " + word);
+            // System.out.println("Removed: " + word);
             
             if(word.equals(end)){
-                System.out.println(top.numSteps);
+                // System.out.println(top.numSteps);
                 
+                // At least 1 rung
                 ArrayList<String> ret = new ArrayList<String>();
                 ret.add(end);
                 
@@ -201,11 +217,8 @@ public class Main {
             }
         }
         
-    	ArrayList<String> r = new ArrayList<String>();
-    	r.add("");
-    	r.add(start);
-    	r.add(end);
-    	
+        // No rungs
+    	ArrayList<String> r = new ArrayList<String>(); 	
 		return r; 
 	}
     
@@ -226,16 +239,16 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		if (!ladder.get(0).equals("")){
+		if (ladder.size() > 0){
 			
-			System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size() - 1) + ".");
+			System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + sWord + " and " + eWord + ".");
 			
 			for(int i = 0; i < ladder.size(); i++){
 				System.out.println(ladder.get(i));
 			}
 		}
 		else{
-			System.out.println("no word ladder can be found between " + ladder.get(1) + " and " + ladder.get(2) + ".");
+			System.out.println("no word ladder can be found between " + sWord + " and " + eWord + ".");
 		}
 	}
 	// TODO
