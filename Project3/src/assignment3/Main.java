@@ -84,8 +84,8 @@ public class Main {
         }
         else{
             char[] words = new char[input.length()];
-            char[] word1 = new char[input.length()/2];
-            char[] word2 = new char[input.length()/2];
+            char[] word1 = new char[5];
+            char[] word2 = new char[5];
             int i = 0;
             int k = 0;
             input.getChars(0, input.length(), words, 0);
