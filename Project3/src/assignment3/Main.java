@@ -238,17 +238,21 @@ public class Main {
 		return words;
 	}
 	
+	/**
+	 * Prints all the strings in n-rungs
+	 * @param ladder is the arraylist we're printing
+	 */
 	public static void printLadder(ArrayList<String> ladder) {
 		if (ladder.size() > 0){
 			
-			System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + sWord + " and " + eWord + ".");
+			System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + sWord.toLowerCase() + " and " + eWord.toLowerCase() + ".");
 			
 			for(int i = 0; i < ladder.size(); i++){
-				System.out.println(ladder.get(i));
+				System.out.println(ladder.get(i).toLowerCase());
 			}
 		}
 		else{
-			System.out.println("no word ladder can be found between " + sWord + " and " + eWord + ".");
+			System.out.println("no word ladder can be found between " + sWord.toLowerCase() + " and " + eWord.toLowerCase() + ".");
 		}
 	}
 	// TODO
