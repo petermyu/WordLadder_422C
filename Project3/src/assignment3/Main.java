@@ -4,9 +4,9 @@
  * Jia-luen Yang
  * JY8435
  * 16455
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Peter Yu
+ * PMY89
+ * 16455
  * Slip days used: <0>
  * Git URL: https://github.com/petermyu/WordLadder_422C
  * Fall 2016
@@ -57,7 +57,7 @@ public class Main {
         // We will call this method before running our JUNIT tests.  So call it 
         // only once at the start of main.
         
-        Scanner keyboard = new Scanner(System.in);
+        // Scanner keyboard = new Scanner(System.in);
         dict = makeDictionary();
         dictLength = dict.size();
         
