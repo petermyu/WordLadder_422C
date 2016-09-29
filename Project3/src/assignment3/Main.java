@@ -84,8 +84,13 @@ public class Main {
         }
         else{
             char[] words = new char[input.length()];
+<<<<<<< HEAD
             char[] word1 = new char[input.length()/2];
             char[] word2 = new char[input.length()/2];
+=======
+            char[] word1 = new char[5];
+            char[] word2 = new char[5];
+>>>>>>> origin/master
             int i = 0;
             int k = 0;
             input.getChars(0, input.length(), words, 0);
@@ -175,6 +180,7 @@ public class Main {
         if (dictLength == list.size()){
             sWord = start;
             eWord = end;
+<<<<<<< HEAD
             list.remove(start);
             if (isRelated(start, end)){
             	ArrayList<String> temp = new ArrayList<String>();
@@ -221,6 +227,64 @@ public class Main {
             	list.clear();
                 list.addAll(dict);
             }
+=======
+            if (getWordLadderBFS(sWord, eWord).isEmpty()){
+                ArrayList<String> noLinks = new ArrayList<String>();
+                list.clear();
+                list.addAll(dict);
+                return noLinks;
+            }
+        }
+        
+        dict.remove(start);
+        
+        // Base case
+        if (start.equals(end)){
+            ArrayList<String> temp = new ArrayList<String>();
+            list.clear();
+            list.addAll(dict);
+            return temp;
+        }
+        else{
+            /*
+            char[] arr = start.toCharArray();
+            for(int i=0; i<arr.length; i++){
+                for(char c='A'; c<='Z'; c++){
+                    char temp = arr[i];
+                    if(arr[i]!=c){
+                        arr[i]=c;
+                    }
+
+                    String newWord = new String(arr);
+                    
+                    if(dict.contains(newWord)){
+                        dict.remove(newWord);
+                        ArrayList<String> t = getWordLadderDFS(newWord, end);
+                        if (t.size() > 0 && t.get(t.size() - 1).equals(end)){
+                            t.add(0, start);
+                            return t;
+                        }
+                    }
+
+                    arr[i]=temp;
+                }
+            }       */
+            
+            int i = list.size() - 1;
+            while(i >= 0){
+                if (isRelated(start, list.get(i))){
+                    String newWord = list.remove(i);
+                    
+                    ArrayList<String> t = getWordLadderDFS(newWord, end);
+                    if (t.size() > 0 && t.get(t.size() - 1).equals(end)){
+                        t.add(0, start);
+                        return t;
+                    }
+                }
+                i--;
+            }
+
+>>>>>>> origin/master
             
             ArrayList<String> noLinks = new ArrayList<String>();
             return noLinks;
@@ -318,6 +382,7 @@ public class Main {
         }
         return words;
     }
+<<<<<<< HEAD
     
     /**
      * Prints all the strings in n-rungs
@@ -362,5 +427,51 @@ public class Main {
         return false;
     }
     
+=======
+    
+    /**
+     * Prints all the strings in n-rungs
+     * @param ladder is the arraylist we're printing
+     */
+    public static void printLadder(ArrayList<String> ladder) {
+        
+        if (ladder.size() > 0){
+            
+            System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + ladder.get(0).toLowerCase() + " and " + ladder.get(ladder.size() - 1).toLowerCase() + ".");
+            
+            for(int i = 0; i < ladder.size(); i++){
+                // System.out.println(ladder.get(i).toLowerCase());
+            }
+        }
+        else{
+            System.out.println("no word ladder can be found between " + sWord.toLowerCase() + " and " + eWord.toLowerCase() + ".");
+        }
+    }
+    // TODO
+    // Other private static methods here
+    /**
+     * Checks if two string are related by one letter
+     * @param str1 is the first string
+     * @param str2 is the second string
+     * @return true if they are related, false if they are not
+     */
+    private static boolean isRelated(String str1, String str2){
+        
+        int count = 0;
+        
+        for(int i = 0; i < str1.length(); i ++){
+            if (str1.charAt(i) == str2.charAt(i)){
+                count++;
+            }
+        }
+        
+        if (count == str1.length() - 1){
+            return true;
+        }
+        
+        return false;
+    }
+    
+>>>>>>> origin/master
 
 }
