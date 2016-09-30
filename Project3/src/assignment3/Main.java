@@ -79,7 +79,7 @@ public class Main {
 
         
         if(input.equals("/QUIT")){
-            System.exit(1);
+            System.exit(0);
             return null;
         }
         else{
@@ -112,130 +112,31 @@ public class Main {
         }
     }
 
-    /*
     public static ArrayList<String> getWordLadderDFS(String start, String end) {
         
         // Returned list should be ordered start to end.  Include start and end.
         // Return empty list if no ladder.
         // TODO some code
         
-        if (dictLength == dict.size()){
-            sWord = start;
-            eWord = end;
-            if (getWordLadderBFS(sWord, eWord).isEmpty()){
-                ArrayList<String> noLinks = new ArrayList<String>();
-                dict = makeDictionary();
-                return noLinks;
-            }
-        }
         
-        dict.remove(start);
-        
-        // Base case
-        if (start.equals(end)){
-            ArrayList<String> temp = new ArrayList<String>();
-            temp.add(end);
-            dict = makeDictionary();
-            return temp;
-        }
-        else{
-            
-            char[] arr = start.toCharArray();
-            for(int i=0; i<arr.length; i++){
-                for(char c='A'; c<='Z'; c++){
-                    char temp = arr[i];
-                    if(arr[i]!=c){
-                        arr[i]=c;
-                    }
+		sWord = start;
+		eWord = end;
+		// System.out.println("Successful init.");
+		if (isRelated(start, end)) {
+			ArrayList<String> temp = new ArrayList<String>();
+			temp.add(start);
+			temp.add(end);
+			return temp;
+		}
+		
+		
+		list.clear();
+        list.addAll(dict);
+		
+		list.remove(start);
 
-                    String newWord = new String(arr);
-                    
-                    if(dict.contains(newWord)){
-                        dict.remove(newWord);
-                        ArrayList<String> t = getWordLadderDFS(newWord, end);
-                        if (t.size() > 0 && t.get(t.size() - 1).equals(end)){
-                            t.add(0, start);
-                            return t;
-                        }
-                    }
-
-                    arr[i]=temp;
-                }
-            }           
-
-            
-            ArrayList<String> noLinks = new ArrayList<String>();
-            return noLinks;
-        }
+        return recursionDFS(start, end);
     }
-    */
-    
-
-    public static ArrayList<String> getWordLadderDFS(String start, String end) {
-        
-        // Returned list should be ordered start to end.  Include start and end.
-        // Return empty list if no ladder.
-        // TODO some code
-        
-        if (dictLength == list.size()){
-            sWord = start;
-            eWord = end;
-
-            list.remove(start);
-            if (isRelated(start, end)){
-            	ArrayList<String> temp = new ArrayList<String>();
-            	temp.add(start);
-            	temp.add(end);
-            	return temp;
-            }
-        }
-        
-        
-        // dict.remove(start);
-        
-        // Base case
-        if (start.equals(end)){
-        	// System.out.println("There's a link");
-            ArrayList<String> temp = new ArrayList<String>();
-            temp.add(end);
-            return temp;
-        }
-        else{
-            int i = 0;
-            while(i < list.size()){
-                if (isRelated(start, list.get(i))){
-                    String newWord = list.get(i);
-                    list.remove(newWord);
-                    ArrayList<String> tes = getWordLadderDFS(newWord, end);
-                    if (tes.size() > 0 && tes.get(tes.size() - 1).equals(end)){// && t.get(t.size() - 1).equals(end)){
-                        tes.add(0, start);
-                        if (tes.get(0).equals(sWord)){
-                        	list.clear();
-                            list.addAll(dict);
-                        }
-                        return tes;
-                    }
-                }
-                else{
-                	i++;
-                }
-                
-            }
-
-            if (start.equals(sWord)){
-            	// System.out.println("No links");
-            	list.clear();
-                list.addAll(dict);
-            }
-
-        
-            
-            ArrayList<String> noLinks = new ArrayList<String>();
-            return noLinks;
-        }
-
-    }
-    
     
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
         sWord = start;
@@ -339,7 +240,7 @@ public class Main {
             System.out.println("a " + (ladder.size() - 2) +  "-rung word ladder exists between " + ladder.get(0).toLowerCase() + " and " + ladder.get(ladder.size() - 1).toLowerCase() + ".");
             
             for(int i = 0; i < ladder.size(); i++){
-                System.out.println(ladder.get(i).toLowerCase());
+                // System.out.println(ladder.get(i).toLowerCase());
             }
         }
         else{
@@ -371,6 +272,37 @@ public class Main {
         return false;
     }
     
+    private static ArrayList<String> recursionDFS(String start, String end){
 
+        // Base case
+        if (start.equals(end)){
+        	// System.out.println("There's a link");
+            ArrayList<String> temp = new ArrayList<String>();
+            temp.add(end);
+            return temp;
+        }
+        else{
+            int i = 0;
+            while(i < list.size()){
+                if (isRelated(start, list.get(i))){
+                    String newWord = list.get(i);
+                    list.remove(newWord);
+                    ArrayList<String> tes = recursionDFS(newWord, end);
+                    if (tes.size() > 0 && tes.get(tes.size() - 1).equals(end)){// && t.get(t.size() - 1).equals(end)){
+                        tes.add(0, start);
+                        return tes;
+                    }
+                    i = 0;
+                }
+                else{
+                	i++;
+                }
+                
+            }      
+            
+            ArrayList<String> noLinks = new ArrayList<String>();
+            return noLinks;
+        }
+    }
 
 }
